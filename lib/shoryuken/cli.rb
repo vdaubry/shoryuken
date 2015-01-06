@@ -140,7 +140,7 @@ module Shoryuken
           parse_queue queue, weight
         end
 
-        o.on '-r', '--require [PATH|DIR]', 'Location of the worker' do |arg|
+        o.on '-r', '--require [PATH|DIR]', Array, 'Location of the worker' do |arg|
           opts[:require] = arg
         end
 
@@ -270,7 +270,9 @@ module Shoryuken
     end
 
     def require_workers
-      require Shoryuken.options[:require] if Shoryuken.options[:require]
+      if Shoryuken.options[:require]
+        Shoryuken.options[:require].each {|r| require r }
+      end
     end
 
     def parse_queues
